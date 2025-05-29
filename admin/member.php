@@ -8,33 +8,73 @@
     <title>Admin Laundry</title>
 </head>
 
-<body class="bg-gray-100">
-    <header class="bg-blue-700 p-4 text-white">
-        <div class="flex justify-between">
-            <h1 class="text-3xl font-bold">Welcome, Admin</h1>
-        </div>
-    </header>
-    <main class="p-4">
-        <div class="flex flex-row">
-
-            <h2 class="text-3xl font-bold text-blue-700 text-left mt-0.5">LAUNDRY ADMIN</h2>
-            <nav class="my-2">
-
-            <ul class="flex justify-around gap-20 text-blue-700">
-                <li><a href="index_admin.php" type="button" class="ml-10 font-bold text-black">Dashboard</a></li>
-                <li><a href="transaksi.php" class="font-bold">transaksi</a></li>
-                <li><a href="member.php" class="font-bold">member</a></li>
-                <li><a href="outlet.php" class="font-bold">Outlet</a></li>
-                <li><a href="user.php" class="font-bold">User</a></li>
-                <li><a href="paket.php" class="font-bold">paket</a></li>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navbar mirip transaksi -->
+    <nav class="bg-blue-700 py-4 px-4 rounded-b-xl shadow">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between">
+            <h1 class="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-0">Welcome, Admin</h1>
+            <button id="nav-toggle" class="sm:hidden text-white focus:outline-none">
+                <span class="material-icons">menu</span>
+            </button>
+            <ul id="nav-menu" class="w-full sm:w-auto flex-col sm:flex-row flex gap-2 sm:gap-6 mt-2 sm:mt-0 bg-blue-700 sm:bg-transparent rounded-xl sm:rounded-none p-2 sm:p-0 hidden sm:flex transition-all duration-200">
+                <li>
+                    <a href="index_admin.php" class="font-bold text-white px-4 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:text-blue-700 <?= basename($_SERVER['PHP_SELF']) == 'index_admin.php' ? 'bg-white text-blue-700' : '' ?>">Dashboard</a>
+                </li>
+                <li>
+                    <a href="transaksi.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'transaksi.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">Transaksi</a>
+                </li>
+                <li>
+                    <a href="member.php" class="font-bold text-white px-4 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:text-blue-700 <?= basename($_SERVER['PHP_SELF']) == 'member.php' ? 'bg-white text-blue-700' : '' ?>">Member</a>
+                </li>
+                <li>
+                    <a href="outlet.php" class="font-bold text-white px-4 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:text-blue-700 <?= basename($_SERVER['PHP_SELF']) == 'outlet.php' ? 'bg-white text-blue-700' : '' ?>">Outlet</a>
+                </li>
+                <li>
+                    <a href="user.php" class="font-bold text-white px-4 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:text-blue-700 <?= basename($_SERVER['PHP_SELF']) == 'user.php' ? 'bg-white text-blue-700' : '' ?>">User</a>
+                </li>
+                <li>
+                    <a href="paket.php" class="font-bold text-white px-4 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:text-blue-700 <?= basename($_SERVER['PHP_SELF']) == 'paket.php' ? 'bg-white text-blue-700' : '' ?>">Paket</a>
+                </li>
             </ul>
+        </div>
+    </nav>
+    <script>
+        // Navbar toggle for mobile
+        document.addEventListener('DOMContentLoaded', function () {
+            const navToggle = document.getElementById('nav-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            navToggle?.addEventListener('click', function () {
+                navMenu.classList.toggle('hidden');
+                navMenu.classList.toggle('flex');
+            });
+            // Optional: close menu when clicking outside (mobile)
+            document.addEventListener('click', function(event) {
+                if (!navMenu.contains(event.target) && !navToggle.contains(event.target) && window.innerWidth < 640) {
+                    navMenu.classList.add('hidden');
+                    navMenu.classList.remove('flex');
+                }
+            });
+            // Show menu on resize if desktop
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 640) {
+                    navMenu.classList.remove('hidden');
+                    navMenu.classList.add('flex');
+                } else {
+                    navMenu.classList.add('hidden');
+                    navMenu.classList.remove('flex');
+                }
+            });
+        });
+    </script>
+    <main class="p-4">
+        <div class="container mx-auto flex flex-col gap-4">
             <div class="container mx-auto mt-6 bg-white p-6 rounded-md shadow-md">
         <button id="openModalBtn"
                 class="border bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Tambahkan
                 member</button>
         <br><br>
-        <div class="overflow-x-auto rounded-lg shadow">
-            <table class="w-full bg-white border border-gray-200 text-sm rounded-lg overflow-hidden">
+        <div class="w-full overflow-x-auto rounded-lg shadow mt-6">
+            <table class="min-w-[350px] md:min-w-[600px] w-full bg-white border border-gray-200 text-sm rounded-lg overflow-hidden">
                 <thead>
                     <tr class="bg-blue-600 text-white">
                         <th class="px-4 py-3 text-left">No</th>
@@ -78,10 +118,6 @@
                 <div class="mt-6">
     </div>
      <div id="modal"
-<?php $hasil =  mysqli_query($conn, "SELECT*FROM member");
-$data = mysqli_fetch_assoc($hasil);
-
-?>
         class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
         <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md relative">
             <button id="closeModalBtn"
@@ -96,17 +132,21 @@ $data = mysqli_fetch_assoc($hasil);
                     <label class="block text-gray-700 mb-1">Alamat</label>
                     <input type="text" name="alamat" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
                 </div>
-                <select name="jenis_kelamin" class="mt-1 block w-full rounded-lg border border-gray-300 shadow-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-200 focus:ring-opacity-50 transition" required>
-								<option value="Laki-laki" <?= $data['jenis_kelamin']=='Laki-laki'?'selected':''; ?>>Laki-laki</option>
-								<option value="Perempuan" <?= $data['jenis_kelamin']=='Perempuan'?'selected':''; ?>>Perempuan</option>
-							</select>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-1">Jenis Kelamin</label>
+                    <select name="jenis_kelamin" class="mt-1 block w-full rounded-lg border border-gray-300 shadow-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-200 focus:ring-opacity-50 transition" required>
+                        <option value="" disabled selected>Pilih Jenis Kelamin</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+                </div>
                 <div class="mb-6">
                     <label class="block text-gray-700 mb-1">No Telepon</label>
                     <input type="text" name="tlp" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
                 </div>
-                <div class="flex justify-end">
-                   <a href="member.php"> <button  type="button" class="mr-2 px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700" onclick="document.getElementById('modalOutlet').classList.add('hidden')">Batal</button></a>
-                    <button type="submit" name="submit" class="mr-2 px-4 py-2 rounded bg-blue-500 hover:bg-gray-300 text-black">tambah member</button>
+                <div class="flex flex-col md:flex-row justify-end gap-2">
+                   <a href="member.php"> <button  type="button" class="mr-0 md:mr-2 px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700" onclick="document.getElementById('modalOutlet').classList.add('hidden')">Batal</button></a>
+                    <button type="submit" name="submit" class="mr-0 md:mr-2 px-4 py-2 rounded bg-blue-500 hover:bg-gray-300 text-black">tambah member</button>
                 </div>
             </form>
         </div>

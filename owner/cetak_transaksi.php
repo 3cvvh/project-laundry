@@ -1,33 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
- <title>Cetak Laporan</title>
- <script src="https://cdn.tailwindcss.com"></script>
- <style>
-    @media print {
-        .no-print { display: none; }
-        body { background: white !important; }
-    }
- </style>
+    <title>Cetak Laporan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            .no-print { display: none; }
+            body { background: white !important; }
+        }
+    </style>
 </head>
 <body class="bg-white text-black font-sans">
-    <div class="max-w-3xl mx-auto p-4 sm:p-8 border border-gray-300 rounded-lg shadow-lg mt-8 bg-white">
+    <div class="max-w-3xl mx-auto p-8 border border-gray-300 rounded-lg shadow-lg mt-8 bg-white">
         <div class="flex flex-col items-center mb-6">
-            <h2 class="text-3xl font-extrabold text-blue-700 tracking-wide mb-1 text-center">LAPORAN TRANSAKSI LAUNDRY</h2>
-            <h3 class="text-xl font-semibold text-gray-700 mb-2 text-center">LAUNDRY</h3>
+            <h2 class="text-3xl font-extrabold text-blue-700 tracking-wide mb-1">LAPORAN TRANSAKSI LAUNDRY</h2>
+            <h3 class="text-xl font-semibold text-gray-700 mb-2">LAUNDRY</h3>
             <div class="w-full border-b-4 border-blue-700 mb-2"></div>
         </div>
 
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
-            <div class="w-full sm:w-auto">
+        <div class="flex justify-between items-center mb-4">
+            <div>
                 <h4 class="text-lg font-semibold mb-1">Data Customer</h4>
-                <div class="overflow-x-auto">
-                <table class="text-sm min-w-[300px]">
+                <table class="text-sm">
                 <?php
                  include "koneksi.php";
-                 $sql = 'select * from transaksi join detail_transaksi on detail_transaksi.id_transaksi=transaksi.id_transaksi join member on member.id_member = transaksi.id_member join outlet on outlet.id_outlet = transaksi.id_outlet where transaksi.id_transaksi = '  .$_GET['id_transaksi'];
+                 if (!isset($_GET['id_transaksi']) || empty($_GET['id_transaksi'])) {
+                    echo '<tr><td colspan="2" class="text-red-600 font-bold">ID Transaksi tidak ditemukan.</td></tr>';
+                    exit;
+                 }
+                 $id_transaksi = intval($_GET['id_transaksi']);
+                 $sql = "SELECT transaksi.*, member.nama_member, member.alamat, member.jenis_kelamin, member.tlp, outlet.nama 
+                        FROM transaksi 
+                        JOIN member ON member.id_member = transaksi.id_member 
+                        JOIN outlet ON outlet.id_outlet = transaksi.id_outlet 
+                        WHERE transaksi.id_transaksi = $id_transaksi";
                  $result = mysqli_query($conn, $sql);
+                 if (!$result) {
+                    echo '<tr><td colspan="2" class="text-red-600 font-bold">Terjadi kesalahan pada query: ' . htmlspecialchars(mysqli_error($conn)) . '</td></tr>';
+                    exit;
+                 }
                  $data_detail_transaksi = mysqli_fetch_assoc($result);
+                 if (!$data_detail_transaksi) {
+                    echo '<tr><td colspan="2" class="text-red-600 font-bold">Data transaksi tidak ditemukan.</td></tr>';
+                    exit;
+                 }
                 ?>
                     <tr>
                         <td class="pr-2 font-semibold text-gray-600">No Transaksi</td>
@@ -66,9 +82,8 @@
                         <td class="font-bold"><?=$data_detail_transaksi['batas_waktu']?></td>
                     </tr>
                 </table>
-                </div>
             </div>
-            <div class="text-right w-full sm:w-auto">
+            <div class="text-right">
                 <span class="block text-gray-600">Tanggal Cetak:</span>
                 <span class="font-semibold"><?=date('l, d-m-Y')?></span>
             </div>
@@ -76,8 +91,7 @@
 
         <div class="mt-6">
             <h4 class="text-lg font-semibold mb-2">Detail Transaksi</h4>
-            <div class="overflow-x-auto">
-            <table class="table-auto w-full border-collapse text-sm shadow rounded overflow-hidden min-w-[600px]">
+            <table class="table-auto w-full border-collapse text-sm shadow rounded overflow-hidden">
                 <thead>
                     <tr class="bg-blue-700 text-white">
                         <th class="border px-3 py-2">No</th>
@@ -91,15 +105,17 @@
                 </thead>
                 <tbody>
                     <?php
-                    include "koneksi.php";
-                    $qry_pembayaran=mysqli_query($conn,"select * from transaksi join detail_transaksi on detail_transaksi.id_transaksi = transaksi.id_transaksi join paket on paket.id_paket = transaksi.id_paket where transaksi.id_transaksi = ".$_GET['id_transaksi']);
-                    $no=0;
+                    $qry_pembayaran = mysqli_query($conn, "SELECT detail_transaksi.*, paket.nama_paket, paket.harga, transaksi.tgl, transaksi.tgl_bayar FROM detail_transaksi 
+                        JOIN paket ON paket.id_paket = detail_transaksi.id_paket 
+                        JOIN transaksi ON transaksi.id_transaksi = detail_transaksi.id_transaksi
+                        WHERE detail_transaksi.id_transaksi = $id_transaksi");
+                    $no = 0;
                     $grand_total = 0;
                     foreach($qry_pembayaran as $data_pembayaran) {
                         $no++;
                         $harga = $data_pembayaran['harga'];
                         $qty = $data_pembayaran['qty'];
-                        $total = $harga*$qty;
+                        $total = $harga * $qty;
                         $grand_total += $total;
                     ?>
                     <tr class="even:bg-gray-50">
@@ -118,8 +134,8 @@
                     </tr>
                 </tbody>
             </table>
-            </div>
         </div>
+
         <div class="mt-12 flex justify-end">
             <div class="text-center">
                 <div class="mb-16"></div>
