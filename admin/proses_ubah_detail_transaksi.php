@@ -2,12 +2,16 @@
     include 'koneksi.php';
 
     $dibayar = $_POST['dibayar'];
+
     $tgl_bayar = $_POST['tgl_bayar'];
     $status = $_POST['status'];
-    $qty = $_POST['qty'];
-
+ if($dibayar == 'dibayar') {
+            $tgl_bayar = $_POST['tgl_bayar'];
+        } else {
+            $tgl_bayar = '0000-00-00';
+        }
     $sql = "
-        update transaksi join detail_transaksi on detail_transaksi.id = transaksi.id set dibayar = '" . $dibayar . "', tgl_bayar = '" . $tgl_bayar . "', status = '" . $status . "', qty = '" . $qty . "'
+        update transaksi join detail_transaksi on detail_transaksi.id_transaksi = transaksi.id_transaksi set dibayar = '" . $dibayar . "', tgl_bayar = '" . $tgl_bayar . "', status = '" . $status . "' where transaksi.id_transaksi = '" . $_POST['id_transaksi'] . "'
     ";
 
     $result = mysqli_query($conn, $sql);

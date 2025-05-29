@@ -12,7 +12,7 @@ if(isset($_POST["submit"])){
             if($row["role"] === "admin"){
                 $_SESSION["login"] = true;
                 $_SESSION["id_user"] = $row["id_user"];
-                 header("Location: index_admin.php");
+                 header("Location: admin/index_admin.php");
             }elseif($row["role"] === "kasir"){
                 $_SESSION["login"] = true;
                 $_SESSION["id_user"] = $row["id_user"];

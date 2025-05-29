@@ -22,12 +22,12 @@ session_start();
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between">
             <h2 class="text-3xl font-bold text-blue-700">LAUNDRY’SS ADMIN</h2>
             <ul class="flex flex-wrap gap-6 mt-4 md:mt-0">
-                <li><a href="/laundry/index_admin.php" class="font-bold text-black">Dashboard</a></li>
-                <li><a href="/laundry/admin/transaksi.php" class="font-bold text-blue-700">Transaksi</a></li>
-                <li><a href="/laundry/admin/member.php" class="font-bold text-blue-700">Member</a></li>
-                <li><a href="/laundry/admin/outlet.php" class="font-bold text-blue-700">Outlet</a></li>
-                <li><a href="/laundry/admin/user.php" class="font-bold text-blue-700">User</a></li>
-                <li><a href="/laundry/admin/paket.php" class="font-bold text-blue-700">Paket</a></li>
+                <li><a href="index_admin.php" class="font-bold text-black">Dashboard</a></li>
+                <li><a href="transaksi.php" class="font-bold text-blue-700">Transaksi</a></li>
+                <li><a href="member.php" class="font-bold text-blue-700">Member</a></li>
+                <li><a href="outlet.php" class="font-bold text-blue-700">Outlet</a></li>
+                <li><a href="user.php" class="font-bold text-blue-700">User</a></li>
+                <li><a href="paket.php" class="font-bold text-blue-700">Paket</a></li>
             </ul>
         </div>
     </div>
@@ -197,6 +197,6 @@ session_start();
         </div>
     </main>
 </body>
-</html>
 <style>
 </style>
+</html>

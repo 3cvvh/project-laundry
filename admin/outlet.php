@@ -40,15 +40,15 @@
     </header>
     <main class="p-4">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-            <h2 class="text-3xl font-bold text-blue-700">LAUNDRY’SS ADMIN</h2>
+            <h2 class="text-3xl font-bold text-blue-700">LAUNDRY ADMIN</h2>
             <nav>
                 <ul class="flex flex-wrap gap-6 text-blue-700 mt-4 md:mt-0">
-                    <li><a href="/laundry/index_admin.php" class="font-bold text-black">Dashboard</a></li>
-                    <li><a href="/laundry/admin/transaksi.php" class="font-bold">Transaksi</a></li>
-                    <li><a href="/laundry/admin/member.php" class="font-bold">Member</a></li>
-                    <li><a href="/laundry/admin/outlet.php" class="font-bold">Outlet</a></li>
-                    <li><a href="/laundry/admin/user.php" class="font-bold">User</a></li>
-                    <li><a href="/laundry/admin/paket.php" class="font-bold">Paket</a></li>
+                    <li><a href="index_admin.php" class="font-bold text-black">Dashboard</a></li>
+                    <li><a href="transaksi.php" class="font-bold">Transaksi</a></li>
+                    <li><a href="member.php" class="font-bold">Member</a></li>
+                    <li><a href="outlet.php" class="font-bold">Outlet</a></li>
+                    <li><a href="user.php" class="font-bold">User</a></li>
+                    <li><a href="paket.php" class="font-bold">Paket</a></li>
                 </ul>
             </nav>
         </div>

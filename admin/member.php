@@ -17,16 +17,16 @@
     <main class="p-4">
         <div class="flex flex-row">
 
-            <h2 class="text-3xl font-bold text-blue-700 text-left mt-0.5">LAUNDRY’SS ADMIN</h2>
+            <h2 class="text-3xl font-bold text-blue-700 text-left mt-0.5">LAUNDRY ADMIN</h2>
             <nav class="my-2">
 
             <ul class="flex justify-around gap-20 text-blue-700">
-                <li><a href="/laundry/index_admin.php" type="button" class="ml-10 font-bold text-black">Dashboard</a></li>
-                <li><a href="/laundry/admin/transaksi.php" class="font-bold">transaksi</a></li>
-                <li><a href="/laundry/admin/member.php" class="font-bold">member</a></li>
-                <li><a href="/laundry/admin/outlet.php" class="font-bold">Outlet</a></li>
-                <li><a href="/laundry/admin/user.php" class="font-bold">User</a></li>
-                <li><a href="/laundry/admin/paket.php" class="font-bold">paket</a></li>
+                <li><a href="index_admin.php" type="button" class="ml-10 font-bold text-black">Dashboard</a></li>
+                <li><a href="transaksi.php" class="font-bold">transaksi</a></li>
+                <li><a href="member.php" class="font-bold">member</a></li>
+                <li><a href="outlet.php" class="font-bold">Outlet</a></li>
+                <li><a href="user.php" class="font-bold">User</a></li>
+                <li><a href="paket.php" class="font-bold">paket</a></li>
             </ul>
             <div class="container mx-auto mt-6 bg-white p-6 rounded-md shadow-md">
         <button id="openModalBtn"
