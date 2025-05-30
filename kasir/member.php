@@ -12,7 +12,7 @@
     <!-- Navbar mirip transaksi -->
     <nav class="bg-blue-700 py-4 px-4 rounded-b-xl shadow">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between">
-            <h1 class="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-0">Welcome, Admin</h1>
+            <h1 class="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-0">Welcome, kasir</h1>
             <button id="nav-toggle" class="sm:hidden text-white focus:outline-none">
                 <span class="material-icons">menu</span>
             </button>
@@ -27,6 +27,13 @@
                     <a href="member.php" class="font-bold text-white px-4 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:text-blue-700 <?= basename($_SERVER['PHP_SELF']) == 'member.php' ? 'bg-white text-blue-700' : '' ?>">Member</a>
                 </li>
             </ul>
+            <a href="logout.php" onclick="return confirm('Anda yakin ingin logout?')" 
+                   class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 font-bold ml-2 transition whitespace-nowrap shadow-lg border border-red-600 hover:scale-105 active:scale-95 duration-150">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"/>
+                    </svg>
+                    <span class="hidden sm:inline">Logout</span>
+                </a>
         </div>
     </nav>
     <script>
