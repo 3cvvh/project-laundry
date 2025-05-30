@@ -1,6 +1,18 @@
 <?php
 include "admin/koneksi.php";
 session_start();
+if(isset($_SESSION["login"])){
+    if($_SESSION["role"] === "admin"){
+        header("Location: admin/index_admin.php");
+        exit;
+    }elseif($_SESSION["role"] === "kasir"){
+        header("Location: kasir/index_kasir.php");
+        exit;
+    }elseif($_SESSION["role"] === "owner"){
+        header("Location: owner/index_owner.php");
+        exit;
+    }
+}
 if(isset($_POST["submit"])){
     $user = $_POST["username"];
     $pass = $_POST["password"];
