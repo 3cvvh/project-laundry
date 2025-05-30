@@ -1,6 +1,9 @@
-<?php
+<?php 
 session_start();
-$id=$_GET['id_transaksi'];
+if (!isset($_SESSION['login']) || $_SESSION['level'] != 'kasir') {
+    header("Location: ../login.php");
+    exit;
+}
 ?>
 
 

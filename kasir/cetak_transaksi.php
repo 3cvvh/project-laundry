@@ -1,3 +1,10 @@
+<?php 
+session_start();
+if (!isset($_SESSION['login']) || $_SESSION['level'] != 'kasir') {
+    header("Location: ../login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>

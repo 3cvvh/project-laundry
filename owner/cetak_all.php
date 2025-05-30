@@ -1,4 +1,9 @@
 <?php
+session_start();
+if (!isset($_SESSION['login']) || $_SESSION['level'] != 'owner') {
+    header("Location: ../login.php");
+    exit;
+}
 include "../admin/koneksi.php";
 header("Content-type: text/html; charset=utf-8");
 ?>

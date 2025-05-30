@@ -1,4 +1,11 @@
-<!DOCTYPE html>
+
+<?php
+session_start();
+if (!isset($_SESSION['login']) || $_SESSION['level'] != 'owner') {
+    header("Location: ../login.php");
+    exit;
+}
+?><!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -20,14 +27,14 @@
             <div class="col-span-1 bg-white rounded-lg shadow p-6 flex flex-col justify-between">
                 <div>
                     <h2 class="text-xl font-bold text-blue-700 mb-2">Welcome To Laundry </h2>
-                    <p class="text-gray-600 mb-4">Terimakasih telah bergabung di LaundryApp.<br>Anda login menggunakan akun owner.</p>
+                    <p class="text-gray-600 mb-4">Terimakasih telah bergabung di Laundry<br>Anda login menggunakan akun owner.</p>
                 </div>
             </div>
             <div class="col-span-1 md:col-span-2 bg-white rounded-lg shadow p-6">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                     <div>
-                        <h3 class="text-lg font-bold text-gray-800">Halaman Dashboard Admin</h3>
-                        <p class="text-gray-500 text-sm">Histori Data Transaksi Family Laundry</p>
+                        <h3 class="text-lg font-bold text-gray-800">Halaman Dashboard Owner</h3>
+                        <p class="text-gray-500 text-sm">Histori Data Transaksi  Laundry</p>
                     </div>
                     <a href="cetak_all.php" target="_blank" class="mt-2 md:mt-0 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 font-semibold">Cetak Generate Laporan</a>
                 </div>

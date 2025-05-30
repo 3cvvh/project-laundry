@@ -1,5 +1,10 @@
 <?php 
 session_start();
+
+if (!isset($_SESSION['login']) || $_SESSION['level'] != 'kasir') {
+    header("Location: ../login.php");
+    exit;
+}
 require_once "function_select.php";
 $user = count(select("SELECT * FROM user"));
 $transaksi = count(select("SELECT * FROM transaksi"));
@@ -20,13 +25,13 @@ $oulet = count(select("SELECT * FROM outlet"));
     <!-- Navbar -->
       <nav class="bg-blue-700 py-4 px-4 rounded-b-xl shadow">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between">
-            <h1 class="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-0">Welcome, kasir</h1>
+            <h1 class="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-0">Welcome kasir</h1>
             <button id="nav-toggle" class="sm:hidden text-white focus:outline-none">
                 <span class="material-icons">menu</span>
             </button>
             <ul id="nav-menu" class="w-full sm:w-auto flex-col sm:flex-row flex gap-2 sm:gap-6 mt-2 sm:mt-0 bg-blue-700 sm:bg-transparent rounded-xl sm:rounded-none p-2 sm:p-0 hidden sm:flex transition-all duration-200">
                 <li>
-                    <a href="index_kasir.php" class="font-bold text-white px-4 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:text-blue-700 <?= basename($_SERVER['PHP_SELF']) == 'index_admin.php' ? 'bg-white text-blue-700' : '' ?>">Dashboard</a>
+                    <a href="index_kasir.php" class="font-bold text-white px-4 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:text-blue-700 <?= basename($_SERVER['PHP_SELF']) == 'index_kasir.php' ? 'bg-white text-blue-700' : '' ?>">Dashboard</a>
                 </li>
                 <li>
                     <a href="transaksi.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'transaksi.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">Transaksi</a>

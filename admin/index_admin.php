@@ -1,5 +1,9 @@
 <?php 
 session_start();
+if (!isset($_SESSION['login']) || $_SESSION['level'] != 'admin') {
+    header("Location: ../login.php");
+    exit;
+}
 require_once "function_select.php";
 $user = count(select("SELECT * FROM user"));
 $transaksi = count(select("SELECT * FROM transaksi"));
@@ -33,13 +37,16 @@ $oulet = count(select("SELECT * FROM outlet"));
                         <a href="transaksi.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'transaksi.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">Transaksi</a>
                     </li>
                     <li>
-                        <a href="member.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'transaksi.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">member</a>
+                        <a href="member.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'transaksi.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">Member</a>
                     </li>
                     <li>
-                        <a href="user.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'transaksi.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">user</a>
+                    <a href="outlet.php" class="font-bold text-white px-4 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:text-blue-700 <?= basename($_SERVER['PHP_SELF']) == 'outlet.php' ? 'bg-white text-blue-700' : '' ?>">Outlet</a>
+                </li>
+                    <li>
+                        <a href="user.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'transaksi.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">User</a>
                     </li>
                     <li>
-                        <a href="paket.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'transaksi.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">paket</a>
+                        <a href="paket.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'transaksi.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">Paket</a>
                     </li>
                 </ul>
                 <a href="logout.php" onclick="return confirm('Anda yakin ingin logout?')" 

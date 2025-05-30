@@ -8,26 +8,27 @@ if(isset($_POST["submit"])){
     $result = mysqli_query($conn, $query);
     if(mysqli_num_rows($result)){
         $row = mysqli_fetch_assoc($result);
-        if($pass === $row["password"]){
+        if($pass === $row["password"]){ 
+            $_SESSION["role"] = $row["role"];
             if($row["role"] === "admin"){
                 $_SESSION["login"] = true;
                 $_SESSION["id_user"] = $row["id_user"];
-                 header("Location: admin/index_admin.php");
+                header("Location: admin/index_admin.php");
             }elseif($row["role"] === "kasir"){
                 $_SESSION["login"] = true;
                 $_SESSION["id_user"] = $row["id_user"];
-             header("Location: kasir/index_kasir.php");
-        }elseif($row["role"] === "owner"){
+                header("Location: kasir/index_kasir.php");
+            }elseif($row["role"] === "owner"){
                 $_SESSION["login"] = true;
                 $_SESSION["id_user"] = $row["id_user"];
                 header("Location: owner/index_owner.php");
             }
             exit;
+        }
+        $error = true;
+    } else {
+        $error1 = true;
     }
-    $error = true;
-    
-}
-$error1 = true;    
 }
 ?>
 <!DOCTYPE html>
@@ -41,13 +42,10 @@ $error1 = true;
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
     <main class="w-full max-w-md mx-auto">
         <div class="bg-white shadow-lg rounded-lg px-8 py-10">
-            <div class="mb-8 text-center">
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">Selamat Datang Kembali</h3>
-                <p class="text-gray-500">Silahkan login untuk melanjutkan</p>
-            </div>
+            <h2 class="text-3xl font-bold text-blue-600 mb-6 text-left">Login</h2>
             <?php if(isset($error)): ?>
             <div class="text-red-500 text-sm mb-4">
-                <p> Password salah!</p>
+                <p>Password salah!</p>
             </div>
             <?php elseif(isset($error1)): ?>
             <div class="text-red-500 text-sm mb-4">
@@ -57,13 +55,13 @@ $error1 = true;
             <form action="" method="post" class="space-y-6">
                 <div>
                     <label for="username" class="block text-gray-700 font-semibold mb-1">Username</label>
-                    <input type="text" id="username" name="username" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                    <input type="text" id="username" name="username" class="w-full px-4 py-2 border border-blue-400 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 <div>
                     <label for="password" class="block text-gray-700 font-semibold mb-1">Password</label>
                     <input type="password" id="password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" required>
                 </div>
-                <button type="submit" name="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded transition duration-200">Login</button>
+                <button type="submit" name="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded transition duration-200 text-lg">Log in</button>
             </form>
         </div>
     </main>

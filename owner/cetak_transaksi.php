@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['login']) || $_SESSION['level'] != 'owner') {
+    header("Location: ../login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -139,7 +146,7 @@
         <div class="mt-12 flex justify-end">
             <div class="text-center">
                 <div class="mb-16"></div>
-                <div class="font-semibold">Admin Laundry'ss</div>
+                <div class="font-semibold">Admin Laundry</div>
                 <div class="mt-16">(___________________)</div>
             </div>
         </div>

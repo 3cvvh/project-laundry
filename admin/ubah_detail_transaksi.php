@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['login']) || $_SESSION['level'] != 'admin') {
+    header("Location: ../login.php");
+    exit;
+}
 $id=$_GET['id_transaksi'];
 ?>
 
