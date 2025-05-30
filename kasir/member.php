@@ -9,10 +9,13 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'kasir') {
 <html lang="id">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
-    <title>Admin Laundry</title>
+    <meta charset="utf-8" />
+    <title>Laundry App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=dataset" />
 </head>
 
 <body class="bg-gray-100 min-h-screen">
@@ -31,7 +34,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'kasir') {
                     <a href="transaksi.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'transaksi.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">Transaksi</a>
                 </li>
                 <li>
-                    <a href="member.php" class="font-bold text-white px-4 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:text-blue-700 <?= basename($_SERVER['PHP_SELF']) == 'member.php' ? 'bg-white text-blue-700' : '' ?>">Member</a>
+                    <a href="member.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'member.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">Member</a>
                 </li>
             </ul>
             <a href="logout.php" onclick="return confirm('Anda yakin ingin logout?')" 
