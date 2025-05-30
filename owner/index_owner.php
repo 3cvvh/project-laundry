@@ -29,7 +29,7 @@
                         <h3 class="text-lg font-bold text-gray-800">Halaman Dashboard Admin</h3>
                         <p class="text-gray-500 text-sm">Histori Data Transaksi Family Laundry</p>
                     </div>
-                    <a href="cetak_transaksi.php" target="_blank" class="mt-2 md:mt-0 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 font-semibold">Cetak Generate Laporan</a>
+                    <a href="cetak_all.php" target="_blank" class="mt-2 md:mt-0 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 font-semibold">Cetak Generate Laporan</a>
                 </div>
                 <div class="overflow-x-auto rounded shadow">
                     <table class="min-w-full bg-white border border-gray-200 text-sm rounded-lg overflow-hidden">
@@ -44,6 +44,7 @@
                                 <th class="px-4 py-2 text-left">Customer</th>
                                 <th class="px-4 py-2 text-left">Paket</th>
                                 <th class="px-4 py-2 text-left">Status Order</th>
+                                <th class="px-2 py-1 md:px-4 md:py-2 text-left">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,16 +54,21 @@
                         $no=0;
                         while($data_transaksi=mysqli_fetch_array($qry_transaksi)){
                         $no++;?>
-                            <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
-                                <td class="px-4 py-2"><?=$no?></td>
-                                <td class="px-4 py-2"><?=$data_transaksi['nama']?></td>
-                                <td class="px-4 py-2"><?=$data_transaksi['tgl']?></td> 
-                                <td class="px-4 py-2"><?=$data_transaksi['batas_waktu']?></td> 
-                                <td class="px-4 py-2"><?=$data_transaksi['dibayar']?></td> 
-                                <td class="px-4 py-2"><?=$data_transaksi['tgl_bayar']?></td> 
-                                <td class="px-4 py-2"><?=$data_transaksi['nama_member']?></td>
-                                <td class="px-4 py-2"><?=$data_transaksi['nama_paket']?></td>
-                                <td class="px-4 py-2"><?=$data_transaksi['status']?></td>
+                            <tr class="border-b border-gray-200 hover:bg-blue-50 transition md:table-row flex flex-col md:flex-row mb-4 md:mb-0 bg-white md:bg-transparent rounded md:rounded-none shadow md:shadow-none">
+                                <td class="px-4 py-2 md:table-cell" data-label="No"><?=$no?></td>
+                                <td class="px-4 py-2 md:table-cell" data-label="Outlet"><?=$data_transaksi['nama']?></td>
+                                <td class="px-4 py-2 md:table-cell" data-label="Tanggal"><?=$data_transaksi['tgl']?></td> 
+                                <td class="px-4 py-2 md:table-cell" data-label="Batas Waktu"><?=$data_transaksi['batas_waktu']?></td> 
+                                <td class="px-4 py-2 md:table-cell" data-label="Pembayaran"><?=$data_transaksi['dibayar']?></td> 
+                                <td class="px-4 py-2 md:table-cell" data-label="Tanggal Dibayar"><?=$data_transaksi['tgl_bayar']?></td> 
+                                <td class="px-4 py-2 md:table-cell" data-label="Customer"><?=$data_transaksi['nama_member']?></td>
+                                <td class="px-4 py-2 md:table-cell" data-label="Paket"><?=$data_transaksi['nama_paket']?></td>
+                                <td class="px-4 py-2 md:table-cell" data-label="Status Order"><?=$data_transaksi['status']?></td>
+                                <td class="px-4 py-2 flex gap-2 md:table-cell block" data-label="Aksi">
+                                    <a href="./detail_transaksi.php?id_transaksi=<?php echo $data_transaksi['id_transaksi']?>" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition font-semibold">
+                                        Detail
+                                    </a>
+                                </td>
                             </tr>
                         <?php } ?>
                         </tbody>

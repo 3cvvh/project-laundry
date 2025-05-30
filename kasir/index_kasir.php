@@ -20,7 +20,7 @@ $oulet = count(select("SELECT * FROM outlet"));
     <!-- Navbar -->
     <nav class="bg-blue-700 py-4 px-4 rounded-b-xl shadow">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between">
-            <h1 class="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-0">Welcome, Admin</h1>
+            <h1 class="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-0">Welcome Kasir</h1>
             <div class="flex items-center gap-2">
                 <button id="nav-toggle" class="sm:hidden text-white focus:outline-none">
                 <span class="material-icons">menu</span>

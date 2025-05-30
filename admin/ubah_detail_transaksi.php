@@ -16,22 +16,15 @@ $id=$_GET['id_transaksi'];
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=dataset" />
 </head>
 <body class="bg-gray-100 min-h-screen">
-    <!-- Navbar -->
-    <nav class="bg-blue-700 shadow-lg px-8 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-4">
-            <span class="text-3xl font-bold text-white">LAUNDRY'SS</span>
+    <!-- Navbar Baru -->
+    <header class="bg-white shadow mb-8">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+    
+                <span class="text-xl font-bold text-blue-700 tracking-wide">Laundry Admin</span>
+            </div>
         </div>
-        <div class="flex items-center gap-2">
-            <a href="index_owner.php" class="flex items-center px-4 py-2 bg-white text-black rounded font-semibold">
-                <span class="material-symbols-outlined">dataset</span>   
-                Dashboard
-				<a href="logout.php" class="bg-red-600 px-4 py-2 rounded hover:bg-red-700 font-bold text-white"
-            onclick="return confirm('Anda yakin ingin logout?')">
-            Logout
-            </a>
-			</a>
-        </div>
-    </nav>
+    </header>
     <div class="container mx-auto px-4">
         <div class="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
             <h1 class="text-2xl font-bold mb-4 text-gray-800">Ubah Detail Transaksi</h1>
