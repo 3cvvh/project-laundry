@@ -6,9 +6,9 @@
 ---
 
 ## 👥 Anggota Kelompok 3
+- **RASYA AL FARIS ZIKRI** _(Project Manager)_
 - **FIKRI BAYUHADI ISKANDAR**
 - **ELSA OKTAVIANI**
-- **RASYA AL FARIS ZIKRI**
 
 ---
 
