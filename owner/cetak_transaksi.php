@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['login']) || $_SESSION['level'] != 'owner') {
+if (!isset($_SESSION['login']) || $_SESSION['role'] != 'owner') {
     header("Location: ../login.php");
     exit;
 }
