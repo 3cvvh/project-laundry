@@ -1,9 +1,11 @@
 <?php 
 session_start();
+$user_id = $_SESSION["id_user"];
 if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
     header("Location: ../login.php");
     exit;
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -104,7 +106,6 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
                             <th class="px-4 py-3 text-left">No</th>
                             <th class="px-4 py-3 text-left">Nama User</th>
                             <th class="px-4 py-3 text-left">Username</th>
-                            <th class="px-4 py-3 text-left">Password</th>
                             <th class="px-4 py-3 text-left">Nama Outlet</th>
                             <th class="px-4 py-3 text-left">Role</th>
                             <th class="px-4 py-3 text-left">Aksi</th>
@@ -123,16 +124,21 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
                         <td class="px-4 py-2"><?=$no?></td>
                         <td class="px-4 py-2"><?=$data_user['nama_user']?></td>
                         <td class="px-4 py-2"><?=$data_user['username']?></td>
-                        <td class="px-4 py-2"><?=$data_user['password']?></td>
                         <td class="px-4 py-2"><?=$data_user['nama']?></td>
                         <td class="px-4 py-2"><?=$data_user['role']?></td>
                         <td class="px-4 py-2 flex gap-2">
+                            <?php if($_SESSION['role'] == 'admin' && $data_user["role"] != "admin"): ?>
                             <a class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition" href="./ubah_user.php?id_user=<?=$data_user['id_user']?>">
                                 <span class="material-icons text-base">edit</span>
                             </a>
                             <a href="hapus_user.php?id_user=<?=$data_user['id_user']?>" onclick="return confirm('Apakah anda yakin menghapus data ini?')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition">
                                 <span class="material-icons text-base">delete</span>
                             </a>
+                            <?php elseif($data_user["id_user"] == $user_id || $data_user["role"] == "admin"): ?>
+                                <a class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition" href="./ubah_user.php?id_user=<?=$data_user['id_user']?>">
+                                <span class="material-icons text-base">edit</span>
+                            </a>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <?php } ?>
