@@ -5,7 +5,6 @@ if($_POST){
     $password= $_POST['password'];
     $id_outlet = $_POST['id_outlet'];
     $role = $_POST['role'];
-    $Password = password_hash($password, PASSWORD_DEFAULT);
 
 if(empty($username)){
     echo "<script>alert('Username tidak boleh kosong');location.href='user.php';</script>";

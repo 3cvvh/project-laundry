@@ -20,7 +20,7 @@ if(isset($_POST["submit"])){
     $result = mysqli_query($conn, $query);
     if(mysqli_num_rows($result)){
         $row = mysqli_fetch_assoc($result);
-        if(password_verify($pass, $row["password"])){ 
+        if($pass === $row["password"]){{ 
             $_SESSION["role"] = $row["role"];
             if($row["role"] === "admin"){
                 $_SESSION["login"] = true;
@@ -41,6 +41,7 @@ if(isset($_POST["submit"])){
     } else {
         $error1 = true;
     }
+}
 }
 ?>
 <!DOCTYPE html>
