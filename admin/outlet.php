@@ -46,7 +46,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
     <!-- Navbar -->
     <nav class="bg-blue-700 py-4 px-4 rounded-b-xl shadow">
         <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between">
-            <h1 class="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-0">Welcome, Admin</h1>
+            <h1 class="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-0">Welcome Admin</h1>
             <div class="flex items-center gap-2">
                 <button id="nav-toggle" class="sm:hidden text-white focus:outline-none">
                 <span class="material-icons">menu</span>
@@ -156,7 +156,6 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
                     <input type="text" name="tlp" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
                 </div>
                 <div class="flex justify-end">
-                    <button type="button" class="mr-2 px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700" onclick="document.getElementById('modalOutlet').classList.add('hidden')">Batal</button>
                     <input type="submit" name="simpan" value="Tambah Outlet" class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold cursor-pointer">
                 </div>
             </form>

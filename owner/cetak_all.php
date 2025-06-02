@@ -117,7 +117,7 @@ header("Content-type: text/html; charset=utf-8");
         <span style="font-size:14px;color:#555;">Dicetak pada: <?=date('d-m-Y H:i')?></span>
         <div style="text-align:center;">
             <div style="margin-bottom:60px;"></div>
-            <div style="font-weight:600;">Admin Laundry</div>
+            <div style="font-weight:600;">Owner Laundry</div>
             <div style="margin-top:60px;">(___________________)</div>
         </div>
     </div>

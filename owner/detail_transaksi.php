@@ -56,19 +56,19 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'owner') {
             <div>
                 <h3 class="text-xl font-semibold mb-4 text-blue-700">Rincian Pembayaran</h3>
                 <div class="overflow-x-auto">
-                <table class="w-full table-auto border-collapse rounded-lg shadow border border-gray-200 bg-white">
+                <table class="min-w-full bg-white border border-gray-200 text-sm rounded-lg overflow-hidden">
                     <thead>
-                        <tr class="bg-blue-700 text-white">
-                            <th class="py-3 px-4 border-b text-left">No</th>
-                            <th class="py-3 px-4 border-b text-left">Tanggal Order</th>
-                            <th class="py-3 px-4 border-b text-left">Tanggal Bayar</th>
-                            <th class="py-3 px-4 border-b text-left">Paket Laundry</th>
-                            <th class="py-3 px-4 border-b text-left">Berat Cucian</th>
-                            <th class="py-3 px-4 border-b text-left">Harga/Kg</th>
-                            <th class="py-3 px-4 border-b text-left">Subtotal</th>
+                        <tr class="bg-blue-700 text-white hidden md:table-row">
+                            <th class="py-3 px-4 text-left">No</th>
+                            <th class="py-3 px-4 text-left">Tanggal Order</th>
+                            <th class="py-3 px-4 text-left">Tanggal Bayar</th>
+                            <th class="py-3 px-4 text-left">Paket Laundry</th>
+                            <th class="py-3 px-4 text-left">Berat Cucian</th>
+                            <th class="py-3 px-4 text-left">Harga/Kg</th>
+                            <th class="py-3 px-4 text-left">Subtotal</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="text-gray-700">
                         <?php
                         include "koneksi.php";
                         $qry_pembayaran = mysqli_query($conn, "SELECT * FROM transaksi 
@@ -84,19 +84,41 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'owner') {
                             $grand_total += $total;
                             $no++;
                         ?>
-                        <tr class="hover:bg-blue-50">
-                            <td class="py-2 px-4 border-b"><?=$no?></td>
-                            <td class="py-2 px-4 border-b"><?=$data_pembayaran['tgl']?></td>
-                            <td class="py-2 px-4 border-b"><?=$data_pembayaran['tgl_bayar']?></td>
-                            <td class="py-2 px-4 border-b"><?=$data_pembayaran['nama_paket']?></td>
-                            <td class="py-2 px-4 border-b"><?=$data_pembayaran['qty']?> kg</td>
-                            <td class="py-2 px-4 border-b">Rp.<?=number_format($data_pembayaran['harga'],0,',','.')?></td>
-                            <td class="py-2 px-4 border-b font-semibold text-blue-700">Rp.<?=number_format($total,0,',','.')?></td>
+                        <tr class="border-b border-gray-200 hover:bg-blue-50 transition md:table-row flex flex-col md:flex-row mb-4 md:mb-0 bg-white md:bg-transparent rounded md:rounded-none shadow md:shadow-none w-full md:w-auto">
+                            <td class="py-2 px-4 md:table-cell block" data-label="No">
+                                <span class="font-semibold md:hidden block text-blue-700 mb-1">No</span><?=$no?>
+                            </td>
+                            <td class="py-2 px-4 md:table-cell block" data-label="Tanggal Order">
+                                <span class="font-semibold md:hidden block text-blue-700 mb-1">Tanggal Order</span><?=$data_pembayaran['tgl']?>
+                            </td>
+                            <td class="py-2 px-4 md:table-cell block" data-label="Tanggal Bayar">
+                                <span class="font-semibold md:hidden block text-blue-700 mb-1">Tanggal Bayar</span><?=$data_pembayaran['tgl_bayar']?>
+                            </td>
+                            <td class="py-2 px-4 md:table-cell block" data-label="Paket Laundry">
+                                <span class="font-semibold md:hidden block text-blue-700 mb-1">Paket Laundry</span><?=$data_pembayaran['nama_paket']?>
+                            </td>
+                            <td class="py-2 px-4 md:table-cell block" data-label="Berat Cucian">
+                                <span class="font-semibold md:hidden block text-blue-700 mb-1">Berat Cucian</span><?=$data_pembayaran['qty']?> kg
+                            </td>
+                            <td class="py-2 px-4 md:table-cell block" data-label="Harga/Kg">
+                                <span class="font-semibold md:hidden block text-blue-700 mb-1">Harga/Kg</span>Rp.<?=number_format($data_pembayaran['harga'],0,',','.')?>
+                            </td>
+                            <td class="py-2 px-4 md:table-cell block font-semibold" data-label="Subtotal">
+                                <span class="font-semibold md:hidden block text-blue-700 mb-1">Subtotal</span>
+                                <span class="inline-block px-2 py-1 rounded-full bg-blue-100 text-blue-700">
+                                    Rp.<?=number_format($total,0,',','.')?>
+                                </span>
+                            </td>
                         </tr>
                         <?php } ?>
-                        <tr class="bg-blue-200 font-bold">
-                            <td colspan="6" class="py-2 px-4 border-b text-right">Total</td>
-                            <td class="py-2 px-4 border-b text-blue-900">Rp.<?=number_format($grand_total,0,',','.')?></td>
+                        <tr class="bg-blue-200 font-bold md:table-row flex flex-col md:flex-row mb-4 md:mb-0 rounded md:rounded-none shadow-none w-full md:w-auto">
+                            <td colspan="6" class="py-2 px-4 md:table-cell block text-right md:text-right">
+                                <span class="font-semibold md:hidden block text-blue-700 mb-1"></span>
+                                Total
+                            </td>
+                            <td class="py-2 px-4 text-blue-900 md:table-cell block font-bold text-right md:text-right">
+                                Rp.<?=number_format($grand_total,0,',','.')?>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

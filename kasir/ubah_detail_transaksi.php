@@ -31,13 +31,6 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'kasir') {
     <div class="container mx-auto px-4">
         <div class="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
             <h1 class="text-2xl font-bold mb-4 text-gray-800">Ubah Detail Transaksi</h1>
-            <ul class="flex text-gray-500 text-sm mb-6 space-x-2">
-                <li><a href="index.html" class="hover:underline">Home</a></li>
-                <li>/</li>
-                <li>Admin</li>
-                <li>/</li>
-                <li>Transaksi</li>
-            </ul>
             <?php 
 include "koneksi.php";
 if (!isset($_GET['id_transaksi'])) {
@@ -89,7 +82,7 @@ $data = mysqli_fetch_assoc($result);
                 </div>
                 <div class="flex space-x-4 pt-4">
                     <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Submit</button>
-                    <a href="detail_transaksi.php?id_transaksi=<?php echo $id ?>" class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400 transition">Kembali</a>
+                    <a href="detail_transaksi.php?id_transaksi=<?= $data['id_transaksi'] ?>" class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400 transition">Kembali</a>
                 </div>
             </form>
         </div>

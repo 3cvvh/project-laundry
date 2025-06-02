@@ -32,13 +32,6 @@ $id=$_GET['id_transaksi'];
     <div class="container mx-auto px-4">
         <div class="max-w-2xl mx-auto bg-white rounded-lg shadow p-8">
             <h1 class="text-2xl font-bold mb-4 text-gray-800">Ubah Detail Transaksi</h1>
-            <ul class="flex text-gray-500 text-sm mb-6 space-x-2">
-                <li><a href="index.html" class="hover:underline">Home</a></li>
-                <li>/</li>
-                <li>Admin</li>
-                <li>/</li>
-                <li>Transaksi</li>
-            </ul>
             <?php 
 include "koneksi.php";
 if (!isset($_GET['id_transaksi'])) {

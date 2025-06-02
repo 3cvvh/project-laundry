@@ -127,7 +127,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'kasir') {
         <div class="mt-12 flex justify-end">
             <div class="text-center">
                 <div class="mb-16"></div>
-                <div class="font-semibold">Admin Laundry'ss</div>
+                <div class="font-semibold">Kasir Laundry</div>
                 <div class="mt-16">(___________________)</div>
             </div>
         </div>

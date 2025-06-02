@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 if (!isset($_SESSION['login']) || $_SESSION['role'] != 'owner') {
@@ -41,7 +40,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'owner') {
                 <div class="overflow-x-auto rounded shadow">
                     <table class="min-w-full bg-white border border-gray-200 text-sm rounded-lg overflow-hidden">
                         <thead>
-                            <tr class="bg-blue-600 text-white">
+                            <tr class="bg-blue-600 text-white hidden md:table-row">
                                 <th class="px-4 py-2 text-left">No</th>
                                 <th class="px-4 py-2 text-left">Outlet</th>
                                 <th class="px-4 py-2 text-left">Tanggal</th>
@@ -61,18 +60,46 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'owner') {
                         $no=0;
                         while($data_transaksi=mysqli_fetch_array($qry_transaksi)){
                         $no++;?>
-                            <tr class="border-b border-gray-200 hover:bg-blue-50 transition md:table-row flex flex-col md:flex-row mb-4 md:mb-0 bg-white md:bg-transparent rounded md:rounded-none shadow md:shadow-none">
-                                <td class="px-4 py-2 md:table-cell" data-label="No"><?=$no?></td>
-                                <td class="px-4 py-2 md:table-cell" data-label="Outlet"><?=$data_transaksi['nama']?></td>
-                                <td class="px-4 py-2 md:table-cell" data-label="Tanggal"><?=$data_transaksi['tgl']?></td> 
-                                <td class="px-4 py-2 md:table-cell" data-label="Batas Waktu"><?=$data_transaksi['batas_waktu']?></td> 
-                                <td class="px-4 py-2 md:table-cell" data-label="Pembayaran"><?=$data_transaksi['dibayar']?></td> 
-                                <td class="px-4 py-2 md:table-cell" data-label="Tanggal Dibayar"><?=$data_transaksi['tgl_bayar']?></td> 
-                                <td class="px-4 py-2 md:table-cell" data-label="Customer"><?=$data_transaksi['nama_member']?></td>
-                                <td class="px-4 py-2 md:table-cell" data-label="Paket"><?=$data_transaksi['nama_paket']?></td>
-                                <td class="px-4 py-2 md:table-cell" data-label="Status Order"><?=$data_transaksi['status']?></td>
-                                <td class="px-4 py-2 flex gap-2 md:table-cell block" data-label="Aksi">
-                                    <a href="./detail_transaksi.php?id_transaksi=<?php echo $data_transaksi['id_transaksi']?>" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded transition font-semibold">
+                            <tr class="border border-gray-200 hover:shadow-lg hover:bg-blue-50 transition-all duration-200 md:table-row flex flex-col md:flex-row mb-6 md:mb-0 bg-white md:bg-transparent rounded-xl md:rounded-none shadow md:shadow-none w-full md:w-auto">
+                                <td class="px-4 py-3 md:py-2 md:table-cell block border-b md:border-b-0" data-label="No">
+                                    <span class="font-semibold md:hidden block text-blue-700 mb-1">No</span><?=$no?>
+                                </td>
+                                <td class="px-4 py-3 md:py-2 md:table-cell block border-b md:border-b-0" data-label="Outlet">
+                                    <span class="font-semibold md:hidden block text-blue-700 mb-1">Outlet</span><?=$data_transaksi['nama']?>
+                                </td>
+                                <td class="px-4 py-3 md:py-2 md:table-cell block border-b md:border-b-0" data-label="Tanggal">
+                                    <span class="font-semibold md:hidden block text-blue-700 mb-1">Tanggal</span><?=$data_transaksi['tgl']?>
+                                </td> 
+                                <td class="px-4 py-3 md:py-2 md:table-cell block border-b md:border-b-0" data-label="Batas Waktu">
+                                    <span class="font-semibold md:hidden block text-blue-700 mb-1">Batas Waktu</span><?=$data_transaksi['batas_waktu']?>
+                                </td> 
+                                <td class="px-4 py-3 md:py-2 md:table-cell block border-b md:border-b-0" data-label="Pembayaran">
+                                    <span class="font-semibold md:hidden block text-blue-700 mb-1">Pembayaran</span><?=$data_transaksi['dibayar']?>
+                                </td> 
+                                <td class="px-4 py-3 md:py-2 md:table-cell block border-b md:border-b-0" data-label="Tanggal Dibayar">
+                                    <span class="font-semibold md:hidden block text-blue-700 mb-1">Tanggal Dibayar</span><?=$data_transaksi['tgl_bayar']?>
+                                </td> 
+                                <td class="px-4 py-3 md:py-2 md:table-cell block border-b md:border-b-0" data-label="Customer">
+                                    <span class="font-semibold md:hidden block text-blue-700 mb-1">Customer</span><?=$data_transaksi['nama_member']?>
+                                </td>
+                                <td class="px-4 py-3 md:py-2 md:table-cell block border-b md:border-b-0" data-label="Paket">
+                                    <span class="font-semibold md:hidden block text-blue-700 mb-1">Paket</span><?=$data_transaksi['nama_paket']?>
+                                </td>
+                                <td class="px-4 py-3 md:py-2 md:table-cell block border-b md:border-b-0" data-label="Status Order">
+                                    <span class="font-semibold md:hidden block text-blue-700 mb-1">Status Order</span>
+                                    <span class="inline-block px-2 py-1 rounded-full text-xs font-semibold
+                                        <?php
+                                            if($data_transaksi['status']=='baru') echo 'bg-yellow-100 text-yellow-700';
+                                            elseif($data_transaksi['status']=='proses') echo 'bg-blue-100 text-blue-700';
+                                            elseif($data_transaksi['status']=='selesai') echo 'bg-green-100 text-green-700';
+                                            elseif($data_transaksi['status']=='diambil') echo 'bg-purple-100 text-purple-700';
+                                            else echo 'bg-gray-100 text-gray-700';
+                                        ?>">
+                                        <?=$data_transaksi['status']?>
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3 md:py-2 flex gap-2 md:table-cell block border-b-0" data-label="Aksi">
+                                    <a href="./detail_transaksi.php?id_transaksi=<?php echo $data_transaksi['id_transaksi']?>" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg transition font-semibold shadow">
                                         Detail
                                     </a>
                                 </td>

@@ -11,7 +11,6 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
     <meta charset="utf-8" />
     <title>Laundry App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
 </head>

@@ -21,29 +21,33 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'kasir') {
 <body class="bg-gray-100 min-h-screen">
     <!-- Navbar mirip transaksi -->
     <nav class="bg-blue-700 py-4 px-4 rounded-b-xl shadow">
-        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between">
-            <h1 class="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-0">Welcome, kasir</h1>
-            <button id="nav-toggle" class="sm:hidden text-white focus:outline-none">
-                <span class="material-icons">menu</span>
-            </button>
-            <ul id="nav-menu" class="w-full sm:w-auto flex-col sm:flex-row flex gap-2 sm:gap-6 mt-2 sm:mt-0 bg-blue-700 sm:bg-transparent rounded-xl sm:rounded-none p-2 sm:p-0 hidden sm:flex transition-all duration-200">
-                <li>
-                    <a href="index_kasir.php" class="font-bold text-white px-4 py-2 rounded-lg transition-all duration-200 hover:bg-white hover:text-blue-700 <?= basename($_SERVER['PHP_SELF']) == 'index_admin.php' ? 'bg-white text-blue-700' : '' ?>">Dashboard</a>
-                </li>
-                <li>
-                    <a href="transaksi.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'transaksi.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">Transaksi</a>
-                </li>
-                <li>
-                    <a href="member.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'member.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">Member</a>
-                </li>
-            </ul>
-            <a href="logout.php" onclick="return confirm('Anda yakin ingin logout?')" 
+        <div class="max-w-7xl mx-auto flex items-center justify-between flex-wrap">
+            <div class="flex items-center gap-4">
+                <h1 class="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-0">Welcome kasir</h1>
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="nav-toggle" class="sm:hidden text-white focus:outline-none">
+                    <span class="material-icons">menu</span>
+                </button>
+                <ul id="nav-menu" class="w-full sm:w-auto flex-col sm:flex-row flex gap-2 sm:gap-6 mt-2 sm:mt-0 bg-blue-700 sm:bg-transparent rounded-xl sm:rounded-none p-2 sm:p-0 hidden sm:flex transition-all duration-200">
+                    <li>
+                        <a href="index_kasir.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'index_kasir.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="transaksi.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'transaksi.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">Transaksi</a>
+                    </li>
+                    <li>
+                        <a href="member.php" class="font-bold px-4 py-2 rounded-lg transition-all duration-200 <?= basename($_SERVER['PHP_SELF']) == 'member.php' ? 'bg-white text-blue-700' : 'text-white hover:bg-white hover:text-blue-700' ?>">Member</a>
+                    </li>
+                </ul>
+                <a href="logout.php" onclick="return confirm('Anda yakin ingin logout?')" 
                    class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 font-bold ml-2 transition whitespace-nowrap shadow-lg border border-red-600 hover:scale-105 active:scale-95 duration-150">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"/>
                     </svg>
                     <span class="hidden sm:inline">Logout</span>
                 </a>
+            </div>
         </div>
     </nav>
     <script>
@@ -53,24 +57,6 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'kasir') {
             const navMenu = document.getElementById('nav-menu');
             navToggle?.addEventListener('click', function () {
                 navMenu.classList.toggle('hidden');
-                navMenu.classList.toggle('flex');
-            });
-            // Optional: close menu when clicking outside (mobile)
-            document.addEventListener('click', function(event) {
-                if (!navMenu.contains(event.target) && !navToggle.contains(event.target) && window.innerWidth < 640) {
-                    navMenu.classList.add('hidden');
-                    navMenu.classList.remove('flex');
-                }
-            });
-            // Show menu on resize if desktop
-            window.addEventListener('resize', function() {
-                if (window.innerWidth >= 640) {
-                    navMenu.classList.remove('hidden');
-                    navMenu.classList.add('flex');
-                } else {
-                    navMenu.classList.add('hidden');
-                    navMenu.classList.remove('flex');
-                }
             });
         });
     </script>
@@ -153,7 +139,6 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'kasir') {
                     <input type="text" name="tlp" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
                 </div>
                 <div class="flex flex-col md:flex-row justify-end gap-2">
-                   <a href="member.php"> <button  type="button" class="mr-0 md:mr-2 px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700" onclick="document.getElementById('modalOutlet').classList.add('hidden')">Batal</button></a>
                     <button type="submit" name="submit" class="mr-0 md:mr-2 px-4 py-2 rounded bg-blue-500 hover:bg-gray-300 text-black">tambah member</button>
                 </div>
             </form>

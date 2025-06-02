@@ -146,7 +146,7 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'owner') {
         <div class="mt-12 flex justify-end">
             <div class="text-center">
                 <div class="mb-16"></div>
-                <div class="font-semibold">Admin Laundry</div>
+                <div class="font-semibold">Owner Laundry</div>
                 <div class="mt-16">(___________________)</div>
             </div>
         </div>
