@@ -62,7 +62,7 @@ $data = mysqli_fetch_assoc($result);
 	                        $enum_values = explode("','", $matches[1]);
 	                        ?>
                             <select name="dibayar" class="w-full border border-gray-300 rounded px-3 py-2">
-                             <option value="<?php echo $data['dibayar']?>">Status Pembayaran</option>
+                             <option value="<?php echo $data['dibayar']?>"><?php echo $data["dibayar"] ?></option>
                              <?php foreach($enum_values as $dibayar): ?>
                             <option value="<?= $dibayar ?>"><?= ucfirst($dibayar) ?></option>
                             <?php endforeach; ?>
@@ -82,7 +82,7 @@ $data = mysqli_fetch_assoc($result);
 	                        $enum_values = explode("','", $matches[1]);
 	                        ?>
                             <select name="status" class="w-full border border-gray-300 rounded px-3 py-2">
-                             <option value="<?php echo $data['status']?>">Status Order</option>
+                             <option value="<?php echo $data['status']?>"><?php echo ucfirst($data["status"]) ?></option>
                              <?php foreach($enum_values as $status): ?>
                             <option value="<?= $status ?>"><?= ucfirst($status) ?></option>
                             <?php endforeach; ?>
