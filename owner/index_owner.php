@@ -11,31 +11,49 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'owner') {
     <title>Laundry Owner Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 24px 0 rgba(37,99,235,0.08), 0 1.5px 6px 0 rgba(0,0,0,0.03);
+        }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
-    <header class="bg-blue-700 p-4 text-white">
-        <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Laundry  Owner</h1>
-            <nav>
-                <a href="logout.php" class="ml-4 px-4 py-2 bg-red-500 rounded hover:bg-red-600 text-white font-semibold">Logout</a>
+<body class="bg-gradient-to-br from-blue-100 via-white to-blue-200 min-h-screen">
+    <!-- Navbar/Sidebar -->
+    <header class="gradient-bg p-4 text-white shadow-lg">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
+            <h1 class="text-3xl font-extrabold w-full text-center md:text-left tracking-tight drop-shadow">Laundry Owner</h1>
+            <nav class="flex justify-center md:justify-end mt-2 md:mt-0">
+                <a href="logout.php" onclick="return confirm('Anda yakin ingin logout?')" 
+                   class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 font-bold transition whitespace-nowrap shadow-lg border border-red-600 hover:scale-105 active:scale-95 duration-150">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H7a2 2 0 01-2-2V7a2 2 0 012-2h4a2 2 0 012 2v1"/>
+                    </svg>
+                    <span class="hidden sm:inline">Logout</span>
+                </a>
             </nav>
         </div>
     </header>
-    <main class="p-6 max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="col-span-1 bg-white rounded-lg shadow p-6 flex flex-col justify-between">
-                <div>
-                    <h2 class="text-xl font-bold text-blue-700 mb-2">Welcome To Laundry </h2>
-                    <p class="text-gray-600 mb-4">Terimakasih telah bergabung di Laundry<br>Anda login menggunakan akun owner.</p>
+    <main class="p-6 max-w-7xl mx-auto flex flex-col items-center">
+        <div class="w-full flex flex-col md:flex-row md:justify-center md:items-center gap-6 mb-8">
+            <div class="bg-white rounded-2xl card-shadow p-8 flex flex-col justify-center items-center w-full md:w-1/3 border border-blue-100">
+                <h2 class="text-2xl font-extrabold text-blue-700 mb-2 text-center tracking-tight">Welcome To Laundry</h2>
+                <p class="text-gray-600 mb-4 text-center">Terimakasih telah bergabung di Laundry<br>Anda login menggunakan akun <span class="font-bold text-blue-700">owner</span>.</p>
+                <div class="mt-2 flex flex-col items-center">
+                    <span class="inline-block px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold">Dashboard Owner</span>
                 </div>
             </div>
-            <div class="col-span-1 md:col-span-2 bg-white rounded-lg shadow p-6">
-                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+        </div>
+        <div class="w-full flex justify-center">
+            <div class="bg-white rounded-2xl card-shadow p-8 w-full md:w-4/5 lg:w-3/4 xl:w-2/3 border border-blue-100">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
                     <div>
-                        <h3 class="text-lg font-bold text-gray-800">Halaman Dashboard Owner</h3>
-                        <p class="text-gray-500 text-sm">Histori Data Transaksi  Laundry</p>
+                        <h3 class="text-xl font-bold text-gray-800 mb-1">Halaman Dashboard Owner</h3>
+                        <p class="text-gray-500 text-sm">Histori Data Transaksi Laundry</p>
                     </div>
-                    <a href="cetak_all.php" target="_blank" class="mt-2 md:mt-0 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 font-semibold">Cetak Generate Laporan</a>
+                    <a href="cetak_all.php" target="_blank" class="mt-2 md:mt-0 px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold shadow transition duration-150">Cetak Generate Laporan</a>
                 </div>
                 <div class="overflow-x-auto rounded shadow">
                     <table class="min-w-full bg-white border border-gray-200 text-sm rounded-lg overflow-hidden">
