@@ -159,10 +159,21 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
     </script>
     <main class="p-4">
         <div class="container mx-auto bg-white p-6 rounded-md shadow-md">
-            <button id="openModalBtn"
-                class="border bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Tambahkan
-                user</button>
-            <br><br>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+                <form method="get" class="w-full sm:w-1/2 flex">
+                    <input type="text" name="search" placeholder="Cari user..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>"
+                        class="w-full px-4 py-2 border border-blue-400 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <?php if (!empty($_GET['search'])): ?>
+                        <a href="user.php" class="flex items-center px-3 bg-gray-200 hover:bg-gray-300 border-t border-b border-r border-blue-400 rounded-r text-gray-600 transition" title="Hapus pencarian">
+                            <span class="material-icons text-base">close</span>
+                        </a>
+                    <?php else: ?>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-r transition duration-200">Cari</button>
+                    <?php endif; ?>
+                </form>
+                <button id="openModalBtn"
+                    class="border bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full sm:w-auto">Tambahkan user</button>
+            </div>
             <div class="overflow-x-auto rounded-lg shadow">
                 <table class="min-w-full bg-white border border-gray-200 text-sm rounded-lg overflow-hidden">
                     <thead>
@@ -177,93 +188,113 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
                     </thead>
                     <tbody class="text-gray-700">
                         <?php
-                    include "koneksi.php";
-                    $qry_user=mysqli_query($conn,"select * from user JOIN outlet ON outlet.id_outlet = user.id_outlet");
-                    $no=0;
-                 ;
-                    while($data_user=mysqli_fetch_array($qry_user)){
-
-                    $no++;?>
-                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
-                        <td class="px-4 py-2"><?=$no?></td>
-                        <td class="px-4 py-2"><?=$data_user['nama_user']?></td>
-                        <td class="px-4 py-2"><?=$data_user['username']?></td>
-                        <td class="px-4 py-2"><?=$data_user['nama']?></td>
-                        <td class="px-4 py-2"><?=$data_user['role']?></td>
-                        <td class="px-4 py-2 flex gap-2">
-                            <?php if($_SESSION['role'] == 'admin' && $data_user["role"] != "admin"): ?>
-                            <a class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition" href="./ubah_user.php?id_user=<?=$data_user['id_user']?>">
-                                <span class="material-icons text-base">edit</span>
-                            </a>
-                            <a href="hapus_user.php?id_user=<?=$data_user['id_user']?>" onclick="return confirm('Apakah anda yakin menghapus data ini?')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition">
-                                <span class="material-icons text-base">delete</span>
-                            </a>
-                            <?php elseif($data_user["id_user"] == $user_id || $data_user["role"] == "admin"): ?>
-                                <a class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition" href="./ubah_user.php?id_user=<?=$data_user['id_user']?>">
-                                <span class="material-icons text-base">edit</span>
-                            </a>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-        </div>
-        <!-- Modal -->
-        <div id="modalUser" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
-            <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
-                <div class="flex justify-between items-center border-b px-6 py-4">
-                    <h2 class="text-lg font-semibold">Tambah User</h2>
-                    <button class="text-gray-400 hover:text-gray-700" onclick="document.getElementById('modalUser').classList.add('hidden')">
-                        <span class="material-icons">close</span>
-                    </button>
-                </div>
-                <form method="POST" action="./proses_tambah_user.php" enctype="multipart/form-data" class="px-6 py-4">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1">Nama User</label>
-                        <input type="text" name="nama_user" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1">Username</label>
-                        <input type="text" name="username" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1">Password User</label>
-                        <input type="text" name="password" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 mb-1">Nama Outlet</label>
-                        <select name="id_outlet" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
-                            <option value="">Pilih Outlet</option>
-                            <?php
-                            include "koneksi.php";
-                            $qry_outlet=mysqli_query($conn,"select * from outlet");
-                            while($data_outlet=mysqli_fetch_array($qry_outlet)){
-                                echo '<option value="'.$data_outlet['id_outlet'].'">'.$data_outlet['nama'].'</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="mb-6">
-                        <label class="block text-gray-700 mb-1">Role User</label>
-                       <?php
                         include "koneksi.php";
-                        $result = mysqli_query($conn, "SHOW COLUMNS FROM user LIKE 'role'");
-                        $row = mysqli_fetch_array($result);
-                        preg_match("/^enum\(\'(.*)\'\)$/", $row['Type'], $matches);
-                        $enum_values = explode("','", $matches[1]);
+                        // Search logic for all columns
+                        $where = "";
+                        if (isset($_GET['search']) && $_GET['search'] !== "") {
+                            $search = mysqli_real_escape_string($conn, $_GET['search']);
+                            $columns = ['user.nama_user', 'user.username', 'outlet.nama', 'user.role', 'user.id_user'];
+                            $search_clauses = [];
+                            foreach ($columns as $col) {
+                                $search_clauses[] = "$col LIKE '%$search%'";
+                            }
+                            $where = "WHERE " . implode(" OR ", $search_clauses);
+                        }
+                        $qry_user = mysqli_query($conn, "SELECT * FROM user JOIN outlet ON outlet.id_outlet = user.id_outlet $where");
+                        $no = 0;
+                        $found = false;
+                        while($data_user = mysqli_fetch_array($qry_user)){
+                            $no++;
+                            $found = true;
                         ?>
-                        <select name="role" class="w-full border border-gray-300 rounded px-3 py-2">
-                            <option value="">Role User</option>
-                            <?php foreach($enum_values as $role): ?>
-                                <option value="<?= $role ?>"><?= ucfirst($role) ?></option>
-                            <?php endforeach; ?>
-                        </select>
+                        <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
+                            <td class="px-4 py-2"><?=$no?></td>
+                            <td class="px-4 py-2"><?=$data_user['nama_user']?></td>
+                            <td class="px-4 py-2"><?=$data_user['username']?></td>
+                            <td class="px-4 py-2"><?=$data_user['nama']?></td>
+                            <td class="px-4 py-2"><?=$data_user['role']?></td>
+                            <td class="px-4 py-2 flex gap-2">
+                                <?php if($_SESSION['role'] == 'admin' && $data_user["role"] != "admin"): ?>
+                                <a class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition flex items-center" href="./ubah_user.php?id_user=<?=$data_user['id_user']?>
+                                    ">
+                                    <span class="material-icons text-base">edit</span>
+                                </a>
+                                <a href="hapus_user.php?id_user=<?=$data_user['id_user']?>" onclick="return confirm('Apakah anda yakin menghapus data ini?')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition flex items-center">
+                                    <span class="material-icons text-base">delete</span>
+                                </a>
+                                <?php elseif($data_user["id_user"] == $user_id || $data_user["role"] == "admin"): ?>
+                                <a class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition flex items-center" href="./ubah_user.php?id_user=<?=$data_user['id_user']?>
+                                    ">
+                                    <span class="material-icons text-base">edit</span>
+                                </a>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <?php }
+                        if (!$found) { ?>
+                        <tr>
+                            <td colspan="6" class="text-center py-6 text-gray-500">Data tidak ditemukan.</td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Modal -->
+            <div id="modalUser" class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center z-50">
+                <div class="bg-white rounded-lg shadow-lg w-full max-w-md">
+                    <div class="flex justify-between items-center border-b px-6 py-4">
+                        <h2 class="text-lg font-semibold">Tambah User</h2>
+                        <button class="text-gray-400 hover:text-gray-700" onclick="document.getElementById('modalUser').classList.add('hidden')">
+                            <span class="material-icons">close</span>
+                        </button>
                     </div>
-                    <div class="flex justify-end">
-                        <input type="submit" name="simpan" value="Tambah User" class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold cursor-pointer">
-                    </div>
-                </form>
+                    <form method="POST" action="./proses_tambah_user.php" enctype="multipart/form-data" class="px-6 py-4">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-1">Nama User</label>
+                            <input type="text" name="nama_user" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-1">Username</label>
+                            <input type="text" name="username" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-1">Password User</label>
+                            <input type="text" name="password" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-1">Nama Outlet</label>
+                            <select name="id_outlet" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                                <option value="">Pilih Outlet</option>
+                                <?php
+                                include "koneksi.php";
+                                $qry_outlet=mysqli_query($conn,"select * from outlet");
+                                while($data_outlet=mysqli_fetch_array($qry_outlet)){
+                                    echo '<option value="'.$data_outlet['id_outlet'].'">'.$data_outlet['nama'].'</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 mb-1">Role User</label>
+                           <?php
+                            include "koneksi.php";
+                            $result = mysqli_query($conn, "SHOW COLUMNS FROM user LIKE 'role'");
+                            $row = mysqli_fetch_array($result);
+                            preg_match("/^enum\(\'(.*)\'\)$/", $row['Type'], $matches);
+                            $enum_values = explode("','", $matches[1]);
+                            ?>
+                            <select name="role" class="w-full border border-gray-300 rounded px-3 py-2">
+                                <option value="">Role User</option>
+                                <?php foreach($enum_values as $role): ?>
+                                    <option value="<?= $role ?>"><?= ucfirst($role) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="flex justify-end">
+                            <input type="submit" name="simpan" value="Tambah User" class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold cursor-pointer">
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </main>

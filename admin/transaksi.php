@@ -132,8 +132,19 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
     <!-- Main Content -->
     <main class="p-2 sm:p-8 max-w-7xl mx-auto">
         <div class="mb-8">
-            <!-- Add Transaksi Button -->
+            <!-- Add Transaksi Button & Search Bar -->
             <div class="mb-6 flex flex-col sm:flex-row justify-between items-center gap-2">
+                <form method="get" class="w-full sm:w-1/2 flex">
+                    <input type="text" name="search" placeholder="Cari transaksi..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>"
+                        class="w-full px-4 py-2 border border-blue-400 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <?php if (!empty($_GET['search'])): ?>
+                        <a href="transaksi.php" class="flex items-center px-3 bg-gray-200 hover:bg-gray-300 border-t border-b border-r border-blue-400 rounded-r text-gray-600 transition" title="Hapus pencarian">
+                            <span class="material-icons text-base">close</span>
+                        </a>
+                    <?php else: ?>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-r transition duration-200">Cari</button>
+                    <?php endif; ?>
+                </form>
                 <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded shadow transition w-full sm:w-auto" onclick="document.getElementById('modalTransaksi').classList.remove('hidden')">
                     Tambah Transaksi
                 </button>
@@ -159,10 +170,27 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
                         <tbody class="text-gray-700">
                             <?php
                             include "koneksi.php";
-                            $qry_transaksi=mysqli_query($conn,"select * from transaksi JOIN outlet ON outlet.id_outlet = transaksi.id_outlet JOIN member ON member.id_member = transaksi.id_member JOIN paket ON paket.id_paket = transaksi.id_paket");
+                            // Search logic for all columns
+                            $where = "";
+                            if (isset($_GET['search']) && $_GET['search'] !== "") {
+                                $search = mysqli_real_escape_string($conn, $_GET['search']);
+                                $columns = [
+                                    'outlet.nama', 'transaksi.tgl', 'transaksi.batas_waktu', 'transaksi.dibayar',
+                                    'transaksi.tgl_bayar', 'member.nama_member', 'paket.nama_paket', 'transaksi.status'
+                                ];
+                                $search_clauses = [];
+                                foreach ($columns as $col) {
+                                    $search_clauses[] = "$col LIKE '%$search%'";
+                                }
+                                $where = "WHERE " . implode(" OR ", $search_clauses);
+                            }
+                            $qry_transaksi = mysqli_query($conn,"SELECT * FROM transaksi JOIN outlet ON outlet.id_outlet = transaksi.id_outlet JOIN member ON member.id_member = transaksi.id_member JOIN paket ON paket.id_paket = transaksi.id_paket $where");
                             $no=0;
+                            $found = false;
                             while($data_transaksi=mysqli_fetch_array($qry_transaksi)){
-                            $no++;?>
+                                $no++;
+                                $found = true;
+                            ?>
                             <tr class="border-b hover:bg-gray-50 flex flex-col md:table-row w-full md:w-auto">
                                 <td class="px-4 py-2 md:table-cell block" data-label="No">
                                     <span class="font-semibold md:hidden">No: </span><?=$no?>
@@ -199,6 +227,11 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
                                         Hapus
                                     </a>
                                 </td>
+                            </tr>
+                            <?php }
+                            if (!$found) { ?>
+                            <tr>
+                                <td colspan="10" class="text-center py-6 text-gray-500">Data tidak ditemukan.</td>
                             </tr>
                             <?php } ?>
                         </tbody>

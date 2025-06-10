@@ -157,10 +157,21 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
     </script>
     <main class="p-4">
         <div class="container mx-auto bg-white p-6 rounded-md shadow-md">
-            <button id="openModalBtn"
-                class="border bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 hover:scale-105 transition-transform duration-150">Tambahkan
-                Paket</button>
-            <br><br>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+                <form method="get" class="w-full sm:w-1/2 flex">
+                    <input type="text" name="search" placeholder="Cari paket..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>"
+                        class="w-full px-4 py-2 border border-blue-400 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <?php if (!empty($_GET['search'])): ?>
+                        <a href="paket.php" class="flex items-center px-3 bg-gray-200 hover:bg-gray-300 border-t border-b border-r border-blue-400 rounded-r text-gray-600 transition" title="Hapus pencarian">
+                            <span class="material-icons text-base">close</span>
+                        </a>
+                    <?php else: ?>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-r transition duration-200">Cari</button>
+                    <?php endif; ?>
+                </form>
+                <button id="openModalBtn"
+                    class="border bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full sm:w-auto">Tambahkan Paket</button>
+            </div>
             <div class="overflow-x-auto rounded-lg shadow">
                 <table class="min-w-full bg-white border border-gray-200 text-sm rounded-lg overflow-hidden">
                     <thead>
@@ -176,10 +187,23 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
                     <tbody>
                         <?php
                         include "koneksi.php";
-                        $qry_paket=mysqli_query($conn,"select * from paket JOIN outlet ON outlet.id_outlet= paket.id_outlet");
-                        $no=0;
-                        while($data_paket=mysqli_fetch_array($qry_paket)){
+                        // Search logic for all columns
+                        $where = "";
+                        if (isset($_GET['search']) && $_GET['search'] !== "") {
+                            $search = mysqli_real_escape_string($conn, $_GET['search']);
+                            $columns = ['outlet.nama', 'paket.jenis', 'paket.nama_paket', 'paket.harga', 'paket.id_paket'];
+                            $search_clauses = [];
+                            foreach ($columns as $col) {
+                                $search_clauses[] = "$col LIKE '%$search%'";
+                            }
+                            $where = "WHERE " . implode(" OR ", $search_clauses);
+                        }
+                        $qry_paket = mysqli_query($conn, "SELECT * FROM paket JOIN outlet ON outlet.id_outlet= paket.id_outlet $where");
+                        $no = 0;
+                        $found = false;
+                        while($data_paket = mysqli_fetch_array($qry_paket)){
                             $no++;
+                            $found = true;
                         ?>
                         <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
                             <td class="px-4 py-2"><?=$no?></td>
@@ -188,16 +212,24 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
                             <td class="px-4 py-2"><?=$data_paket['nama_paket']?></td>
                             <td class="px-4 py-2">Rp<?=number_format($data_paket['harga'],0,',','.')?></td>
                             <td class="px-4 py-2 flex gap-2 justify-center items-center">
-                                <a class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition"
-                                    href="ubah_paket.php?id_paket=<?=$data_paket['id_paket']?>">Edit</a>
-                                <a class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition"
+                                <a class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition flex items-center"
+                                    href="ubah_paket.php?id_paket=<?=$data_paket['id_paket']?>
+                                    ">
+                                    <span class="material-icons text-base">edit</span>
+                                </a>
+                                <a class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition flex items-center"
                                     href="hapus_paket.php?id_paket=<?=$data_paket['id_paket']?>"
-                                    onclick="return confirm('Apakah anda yakin menghapus data ini?')">Hapus</a>
+                                    onclick="return confirm('Apakah anda yakin menghapus data ini?')">
+                                    <span class="material-icons text-base">delete</span>
+                                </a>
                             </td>
                         </tr>
-                        <?php
-                        }
-                        ?>
+                        <?php }
+                        if (!$found) { ?>
+                        <tr>
+                            <td colspan="6" class="text-center py-6 text-gray-500">Data tidak ditemukan.</td>
+                        </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>

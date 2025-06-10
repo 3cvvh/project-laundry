@@ -157,10 +157,21 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
     </script>
     <main class="p-4">
         <div class="container mx-auto bg-white p-6 rounded-md shadow-md">
-            <button id="openModalBtn"
-                class="border bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Tambahkan
-                outlet</button>
-            <br><br>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+                <form method="get" class="w-full sm:w-1/2 flex">
+                    <input type="text" name="search" placeholder="Cari outlet..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>"
+                        class="w-full px-4 py-2 border border-blue-400 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <?php if (!empty($_GET['search'])): ?>
+                        <a href="outlet.php" class="flex items-center px-3 bg-gray-200 hover:bg-gray-300 border-t border-b border-r border-blue-400 rounded-r text-gray-600 transition" title="Hapus pencarian">
+                            <span class="material-icons text-base">close</span>
+                        </a>
+                    <?php else: ?>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-r transition duration-200">Cari</button>
+                    <?php endif; ?>
+                </form>
+                <button id="openModalBtn"
+                    class="border bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full sm:w-auto">Tambahkan outlet</button>
+            </div>
             <div class="overflow-x-auto rounded-lg shadow">
                 <table class="min-w-[350px] md:min-w-[600px] w-full bg-white border border-gray-200 text-sm rounded-lg overflow-hidden">
                     <thead>
@@ -174,31 +185,50 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'admin') {
                     </thead>
                     <tbody>
                         <?php
-                    include "koneksi.php";
-                    $qry_outlet=mysqli_query($conn,"select * from outlet");
-                    $no=0;
-                    while($data_outlet=mysqli_fetch_array($qry_outlet)){
-                    $no++;?>
-                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
-                        <td class="px-4 py-2"><?=$no?></td>
-                        <td class="px-4 py-2"><?=$data_outlet['nama']?></td>
-                        <td class="px-4 py-2"><?=$data_outlet['alamat']?></td>
-                        <td class="px-4 py-2"><?=$data_outlet['tlp']?></td>
-                        <td class="px-4 py-2 flex gap-2">
-                            <a class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition" href="ubah_outlet.php?id_outlet=<?=$data_outlet['id_outlet']?>
+                        include "koneksi.php";
+                        // Search logic for all columns
+                        $where = "";
+                        if (isset($_GET['search']) && $_GET['search'] !== "") {
+                            $search = mysqli_real_escape_string($conn, $_GET['search']);
+                            $columns = ['nama', 'alamat', 'tlp', 'id_outlet'];
+                            $search_clauses = [];
+                            foreach ($columns as $col) {
+                                $search_clauses[] = "$col LIKE '%$search%'";
+                            }
+                            $where = "WHERE " . implode(" OR ", $search_clauses);
+                        }
+                        $qry_outlet = mysqli_query($conn, "SELECT * FROM outlet $where");
+                        $no = 0;
+                        $found = false;
+                        while($data_outlet = mysqli_fetch_array($qry_outlet)){
+                            $no++;
+                            $found = true;
+                        ?>
+                        <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
+                            <td class="px-4 py-2"><?=$no?></td>
+                            <td class="px-4 py-2"><?=$data_outlet['nama']?></td>
+                            <td class="px-4 py-2"><?=$data_outlet['alamat']?></td>
+                            <td class="px-4 py-2"><?=$data_outlet['tlp']?></td>
+                            <td class="px-4 py-2 flex gap-2 justify-center items-center">
+                                <a class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition flex items-center" href="ubah_outlet.php?id_outlet=<?=$data_outlet['id_outlet']?>
                                 ">
-                                <span class="material-icons text-base">edit</span>
-                            </a>
-                            <a href="hapus_outlet.php?id_outlet=<?=$data_outlet['id_outlet']?>" onclick="return confirm('Apakah anda yakin menghapus data ini?')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition">
-                                <span class="material-icons text-base">delete</span>
-                            </a>
-                        </td>
-                    </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
+                                    <span class="material-icons text-base">edit</span>
+                                </a>
+                                <a href="hapus_outlet.php?id_outlet=<?=$data_outlet['id_outlet']?>" onclick="return confirm('Apakah anda yakin menghapus data ini?')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition flex items-center">
+                                    <span class="material-icons text-base">delete</span>
+                                </a>
+                            </td>
+                        </tr>
+                        <?php }
+                        if (!$found) { ?>
+                        <tr>
+                            <td colspan="5" class="text-center py-6 text-gray-500">Data tidak ditemukan.</td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
     <!-- Modal -->
     <div id="modal"
         class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">

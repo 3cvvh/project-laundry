@@ -110,49 +110,85 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'kasir') {
     <main class="p-4">
         <div class="container mx-auto flex flex-col gap-4">
             <div class="container mx-auto mt-6 bg-white p-6 rounded-md shadow-md">
-        <button id="openModalBtn"
-                class="border bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Tambahkan
-                member</button>
-        <br><br>
-        <div class="w-full overflow-x-auto rounded-lg shadow mt-6">
-            <table class="min-w-[350px] md:min-w-[600px] w-full bg-white border border-gray-200 text-sm rounded-lg overflow-hidden">
-                <thead>
-                    <tr class="bg-blue-600 text-white">
-                        <th class="px-4 py-3 text-left">No</th>
-                        <th class="px-4 py-3 text-left">Nama Member</th>
-                        <th class="px-4 py-3 text-left">Alamat</th>
-                        <th class="px-4 py-3 text-left">Jenis Kelamin</th>
-                        <th class="px-4 py-3 text-left">Nomor Telepon</th>
-                        <th class="px-4 py-3 text-left">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php
-                    include "koneksi.php";
-                    $qry_member=mysqli_query($conn,"select * from member");
-                    $no=0;
-                    while($data_member=mysqli_fetch_array($qry_member)){
-                        $no++;
-                ?>
-                    <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
-                        <td class="px-4 py-2"><?=$no?></td>
-                        <td class="px-4 py-2"><?=$data_member['nama_member']?></td>
-                        <td class="px-4 py-2"><?=$data_member['alamat']?></td>
-                        <td class="px-4 py-2"><?=$data_member['jenis_kelamin']?></td>
-                        <td class="px-4 py-2"><?=$data_member['tlp']?></td>
-                        <td class="px-4 py-2 flex gap-2 justify-center items-center">
-                            <a class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition" href="ubah_member.php?id_member=<?=$data_member['id_member']?>">Edit</a>
-                            <a class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition" href="hapus_member.php?id_member=<?=$data_member['id_member']?>" onclick="return confirm('Apakah anda yakin menghapus data ini?')">Hapus</a>
-                        </td>
-                    </tr>
-                <?php
-                    }
-                ?>
-                </tbody>
-            </table>
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+                    <form method="get" class="w-full sm:w-1/2 flex">
+                        <input type="text" name="search" placeholder="Cari member..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>"
+                            class="w-full px-4 py-2 border border-blue-400 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        <?php if (!empty($_GET['search'])): ?>
+                            <a href="member.php" class="flex items-center px-3 bg-gray-200 hover:bg-gray-300 border-t border-b border-r border-blue-400 rounded-r text-gray-600 transition" title="Hapus pencarian">
+                                <span class="material-icons text-base">close</span>
+                            </a>
+                        <?php else: ?>
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-r transition duration-200">Cari</button>
+                        <?php endif; ?>
+                    </form>
+                    <button id="openModalBtn"
+                        class="border bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition w-full sm:w-auto">Tambahkan member</button>
+                </div>
+                <div class="w-full overflow-x-auto rounded-lg shadow mt-6">
+                    <table class="min-w-[350px] md:min-w-[600px] w-full bg-white border border-gray-200 text-sm rounded-lg overflow-hidden">
+                        <thead>
+                            <tr class="bg-blue-600 text-white">
+                                <th class="px-4 py-3 text-left">No</th>
+                                <th class="px-4 py-3 text-left">Nama Member</th>
+                                <th class="px-4 py-3 text-left">Alamat</th>
+                                <th class="px-4 py-3 text-left">Jenis Kelamin</th>
+                                <th class="px-4 py-3 text-left">Nomor Telepon</th>
+                                <th class="px-4 py-3 text-left">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            include "koneksi.php";
+                            // Search logic for all columns
+                            $where = "";
+                            if (isset($_GET['search']) && $_GET['search'] !== "") {
+                                $search = mysqli_real_escape_string($conn, $_GET['search']);
+                                $columns = ['nama_member', 'alamat', 'jenis_kelamin', 'tlp', 'id_member'];
+                                $search_clauses = [];
+                                foreach ($columns as $col) {
+                                    $search_clauses[] = "$col LIKE '%$search%'";
+                                }
+                                $where = "WHERE " . implode(" OR ", $search_clauses);
+                            }
+                            $qry_member = mysqli_query($conn, "SELECT * FROM member $where");
+                            $no = 0;
+                            $found = false;
+                            while($data_member = mysqli_fetch_array($qry_member)){
+                                $no++;
+                                $found = true;
+                        ?>
+                            <tr class="border-b border-gray-200 hover:bg-blue-50 transition">
+                                <td class="px-4 py-2"><?=$no?></td>
+                                <td class="px-4 py-2"><?=$data_member['nama_member']?></td>
+                                <td class="px-4 py-2"><?=$data_member['alamat']?></td>
+                                <td class="px-4 py-2"><?=$data_member['jenis_kelamin']?></td>
+                                <td class="px-4 py-2"><?=$data_member['tlp']?></td>
+                                <td class="px-4 py-2 flex gap-2 justify-center items-center">
+                                    <a class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition flex items-center" href="ubah_member.php?id_member=<?=$data_member['id_member']?>
+                                        ">
+                                        <span class="material-icons text-base">edit</span>
+                                    </a>
+                                    <a class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition flex items-center" href="hapus_member.php?id_member=<?=$data_member['id_member']?>" onclick="return confirm('Apakah anda yakin menghapus data ini?')">
+                                        <span class="material-icons text-base">delete</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php
+                            }
+                            if (!$found) {
+                        ?>
+                            <tr>
+                                <td colspan="6" class="text-center py-6 text-gray-500">Data tidak ditemukan.</td>
+                            </tr>
+                        <?php
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
-    <div>
         <div>
             <div>
                 <div>
