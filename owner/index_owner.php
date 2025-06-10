@@ -55,6 +55,18 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'owner') {
                     </div>
                     <a href="cetak_all.php" target="_blank" class="mt-2 md:mt-0 px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold shadow transition duration-150">Cetak Generate Laporan</a>
                 </div>
+                <!-- Search Bar -->
+                <form method="get" class="mb-4 flex w-full md:w-1/2">
+                    <input type="text" name="search" placeholder="Cari transaksi..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>"
+                        class="w-full px-4 py-2 border border-blue-400 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <?php if (!empty($_GET['search'])): ?>
+                        <a href="index_owner.php" class="flex items-center px-3 bg-gray-200 hover:bg-gray-300 border-t border-b border-r border-blue-400 rounded-r text-gray-600 transition" title="Hapus pencarian">
+                            <span class="material-icons text-base">close</span>
+                        </a>
+                    <?php else: ?>
+                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-r transition duration-200">Cari</button>
+                    <?php endif; ?>
+                </form>
                 <div class="overflow-x-auto rounded shadow">
                     <table class="min-w-full bg-white border border-gray-200 text-sm rounded-lg overflow-hidden">
                         <thead>
@@ -74,10 +86,27 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'owner') {
                         <tbody>
                         <?php
                         include "koneksi.php";
-                        $qry_transaksi=mysqli_query($conn,"select * from transaksi JOIN outlet ON outlet.id_outlet = transaksi.id_outlet JOIN member ON member.id_member = transaksi.id_member JOIN paket ON paket.id_paket = transaksi.id_paket");
+                        // Search logic for all columns
+                        $where = "";
+                        if (isset($_GET['search']) && $_GET['search'] !== "") {
+                            $search = mysqli_real_escape_string($conn, $_GET['search']);
+                            $columns = [
+                                'outlet.nama', 'transaksi.tgl', 'transaksi.batas_waktu', 'transaksi.dibayar',
+                                'transaksi.tgl_bayar', 'member.nama_member', 'paket.nama_paket', 'transaksi.status'
+                            ];
+                            $search_clauses = [];
+                            foreach ($columns as $col) {
+                                $search_clauses[] = "$col LIKE '%$search%'";
+                            }
+                            $where = "WHERE " . implode(" OR ", $search_clauses);
+                        }
+                        $qry_transaksi=mysqli_query($conn,"select * from transaksi JOIN outlet ON outlet.id_outlet = transaksi.id_outlet JOIN member ON member.id_member = transaksi.id_member JOIN paket ON paket.id_paket = transaksi.id_paket $where");
                         $no=0;
+                        $found = false;
                         while($data_transaksi=mysqli_fetch_array($qry_transaksi)){
-                        $no++;?>
+                        $no++;
+                        $found = true;
+                        ?>
                             <tr class="border border-gray-200 hover:shadow-lg hover:bg-blue-50 transition-all duration-200 md:table-row flex flex-col md:flex-row mb-6 md:mb-0 bg-white md:bg-transparent rounded-xl md:rounded-none shadow md:shadow-none w-full md:w-auto">
                                 <td class="px-4 py-3 md:py-2 md:table-cell block border-b md:border-b-0" data-label="No">
                                     <span class="font-semibold md:hidden block text-blue-700 mb-1">No</span><?=$no?>
@@ -121,6 +150,11 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != 'owner') {
                                         Detail
                                     </a>
                                 </td>
+                            </tr>
+                        <?php }
+                        if (!$found) { ?>
+                            <tr>
+                                <td colspan="10" class="text-center py-6 text-gray-500">Data tidak ditemukan.</td>
                             </tr>
                         <?php } ?>
                         </tbody>
